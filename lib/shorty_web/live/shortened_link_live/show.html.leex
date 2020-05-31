@@ -1,0 +1,56 @@
+<%= if @live_action in [:edit] do %>
+  <%= live_component @socket, ShortyWeb.ShortenedLinkLive.FormComponent,
+    id: @shortened_link.id,
+    title: @page_title,
+    action: @live_action,
+    shortened_link: @shortened_link,
+    return_to: Routes.shortened_link_show_path(@socket, :show, @shortened_link) %>
+<% else %>
+  <h1>Show Shoretened link</h1>
+
+  <ul>
+
+    <li>
+      <strong>Name:</strong>
+      <%= @shortened_link.name %>
+    </li>
+
+    <li>
+      <strong>Shortened path:</strong>
+      <%= @shortened_link.shortened_path %>
+    </li>
+
+    <li>
+      <strong>Original url:</strong>
+      <%= @shortened_link.original_url %>
+    </li>
+
+  </ul>
+
+  <span><%= live_patch "Edit", to: Routes.shortened_link_show_path(@socket, :edit, @shortened_link), class: "button" %></span>
+  <span><%= live_redirect "Back", to: Routes.shortened_link_index_path(@socket, :index) %></span>
+<% end %>
+
+<h3>Views (<%= Enum.count(@shortened_link.views) %>)</h3>
+
+<table>
+<thead>
+    <tr>
+      <th>Country</th>
+      <th>City</th>
+      <th>IP</th>
+      <th>Viewed at</th>
+    </tr>
+</thead>
+
+<tbody>
+  <%= for view <- @shortened_link.views do %>
+    <tr id="view-<%= view.id %>">
+      <td><%= view.country || "-" %></td>
+      <td><%= view.city || "-" %></td>
+      <td><%= view.ip || "-" %></td>
+      <td><%= view.inserted_at %></td>
+    </tr>
+  <% end %>
+</tbody>
+</table>

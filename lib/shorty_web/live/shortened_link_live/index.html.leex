@@ -1,0 +1,40 @@
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_component @socket, ShortyWeb.ShortenedLinkLive.FormComponent,
+    id: @shortened_link.id || :new,
+    title: @page_title,
+    action: @live_action,
+    shortened_link: @shortened_link,
+    return_to: Routes.shortened_link_index_path(@socket, :index) %>
+<% else %>
+  <h1>Listing Shortened links</h1>
+
+  <span><%= live_patch "New Shoretened link", to: Routes.shortened_link_index_path(@socket, :new), class: "button" %></span>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Shortened link</th>
+      <th>Original url</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="shortened_links">
+    <%= for shortened_link <- @shortened_links do %>
+      <tr id="shortened_link-<%= shortened_link.id %>">
+        <td><%= shortened_link.name %></td>
+        <td><%= link Routes.redirection_url(@socket, :show, shortened_link.shortened_path),
+                     to: Routes.redirection_url(@socket, :show, shortened_link.shortened_path) %></td>
+        <td><%= link shortened_link.original_url, to: shortened_link.original_url %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.shortened_link_show_path(@socket, :show, shortened_link) %></span>
+          <span><%= live_patch "Edit", to: Routes.shortened_link_index_path(@socket, :edit, shortened_link) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: shortened_link.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
