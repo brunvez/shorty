@@ -9,6 +9,7 @@ defmodule Shorty.Links.View do
     field :country, :string
     field :ip, :string
     field :system_os, :string
+    field :user_agent, :string
     belongs_to :link, ShortenedLink
 
     timestamps()
@@ -17,7 +18,7 @@ defmodule Shorty.Links.View do
   @doc false
   def changeset(view, attrs) do
     view
-    |> cast(attrs, [:country, :city, :ip, :system_os, :link_id])
+    |> cast(attrs, [:country, :city, :ip, :system_os, :link_id, :user_agent])
     |> validate_required([])
     |> assoc_constraint(:link)
   end

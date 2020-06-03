@@ -6,8 +6,16 @@ defmodule Shorty.LinksTest do
   describe "shortened_links" do
     alias Shorty.Links.ShortenedLink
 
-    @valid_attrs %{metadata: %{}, original_url: "some original_url", shortened_path: "some shortened_path"}
-    @update_attrs %{metadata: %{}, original_url: "some updated original_url", shortened_path: "some updated shortened_path"}
+    @valid_attrs %{
+      metadata: %{},
+      original_url: "some original_url",
+      shortened_path: "some shortened_path"
+    }
+    @update_attrs %{
+      metadata: %{},
+      original_url: "some updated original_url",
+      shortened_path: "some updated shortened_path"
+    }
     @invalid_attrs %{metadata: nil, original_url: nil, shortened_path: nil}
 
     def shortened_link_fixture(attrs \\ %{}) do
@@ -42,7 +50,10 @@ defmodule Shorty.LinksTest do
 
     test "update_shortened_link/2 with valid data updates the shortened_link" do
       shortened_link = shortened_link_fixture()
-      assert {:ok, %ShortenedLink{} = shortened_link} = Links.update_shortened_link(shortened_link, @update_attrs)
+
+      assert {:ok, %ShortenedLink{} = shortened_link} =
+               Links.update_shortened_link(shortened_link, @update_attrs)
+
       assert shortened_link.metadata == %{}
       assert shortened_link.original_url == "some updated original_url"
       assert shortened_link.shortened_path == "some updated shortened_path"
@@ -50,7 +61,10 @@ defmodule Shorty.LinksTest do
 
     test "update_shortened_link/2 with invalid data returns error changeset" do
       shortened_link = shortened_link_fixture()
-      assert {:error, %Ecto.Changeset{}} = Links.update_shortened_link(shortened_link, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Links.update_shortened_link(shortened_link, @invalid_attrs)
+
       assert shortened_link == Links.get_shortened_link!(shortened_link.id)
     end
 

@@ -5,8 +5,16 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
 
   alias Shorty.Links
 
-  @create_attrs %{metadata: %{}, original_url: "some original_url", shortened_path: "some shortened_path"}
-  @update_attrs %{metadata: %{}, original_url: "some updated original_url", shortened_path: "some updated shortened_path"}
+  @create_attrs %{
+    metadata: %{},
+    original_url: "some original_url",
+    shortened_path: "some shortened_path"
+  }
+  @update_attrs %{
+    metadata: %{},
+    original_url: "some updated original_url",
+    shortened_path: "some updated shortened_path"
+  }
   @invalid_attrs %{metadata: nil, original_url: nil, shortened_path: nil}
 
   defp fixture(:shortened_link) do
@@ -54,7 +62,9 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
     test "updates shortened_link in listing", %{conn: conn, shortened_link: shortened_link} do
       {:ok, index_live, _html} = live(conn, Routes.shortened_link_index_path(conn, :index))
 
-      assert index_live |> element("#shortened_link-#{shortened_link.id} a", "Edit") |> render_click() =~
+      assert index_live
+             |> element("#shortened_link-#{shortened_link.id} a", "Edit")
+             |> render_click() =~
                "Edit Shoretened link"
 
       assert_patch(index_live, Routes.shortened_link_index_path(conn, :edit, shortened_link))
@@ -76,7 +86,10 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
     test "deletes shortened_link in listing", %{conn: conn, shortened_link: shortened_link} do
       {:ok, index_live, _html} = live(conn, Routes.shortened_link_index_path(conn, :index))
 
-      assert index_live |> element("#shortened_link-#{shortened_link.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#shortened_link-#{shortened_link.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#shortened_link-#{shortened_link.id}")
     end
   end
@@ -85,14 +98,16 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
     setup [:create_shortened_link]
 
     test "displays shortened_link", %{conn: conn, shortened_link: shortened_link} do
-      {:ok, _show_live, html} = live(conn, Routes.shortened_link_show_path(conn, :show, shortened_link))
+      {:ok, _show_live, html} =
+        live(conn, Routes.shortened_link_show_path(conn, :show, shortened_link))
 
       assert html =~ "Show Shoretened link"
       assert html =~ shortened_link.original_url
     end
 
     test "updates shortened_link within modal", %{conn: conn, shortened_link: shortened_link} do
-      {:ok, show_live, _html} = live(conn, Routes.shortened_link_show_path(conn, :show, shortened_link))
+      {:ok, show_live, _html} =
+        live(conn, Routes.shortened_link_show_path(conn, :show, shortened_link))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
                "Edit Shoretened link"

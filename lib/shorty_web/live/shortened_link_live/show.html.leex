@@ -31,26 +31,4 @@
   <span><%= live_redirect "Back", to: Routes.shortened_link_index_path(@socket, :index) %></span>
 <% end %>
 
-<h3>Views (<%= Enum.count(@shortened_link.views) %>)</h3>
-
-<table>
-<thead>
-    <tr>
-      <th>Country</th>
-      <th>City</th>
-      <th>IP</th>
-      <th>Viewed at</th>
-    </tr>
-</thead>
-
-<tbody>
-  <%= for view <- @shortened_link.views do %>
-    <tr id="view-<%= view.id %>">
-      <td><%= view.country || "-" %></td>
-      <td><%= view.city || "-" %></td>
-      <td><%= view.ip || "-" %></td>
-      <td><%= view.inserted_at %></td>
-    </tr>
-  <% end %>
-</tbody>
-</table>
+<%= live_component @socket, ShortyWeb.ShortenedLinkLive.ViewMetricsComponent, id: :view_metrics, views: @shortened_link.views, views_by_link: false %>

@@ -25,9 +25,9 @@ defmodule Shorty.Links do
 
   def add_view(link, attrs \\ %{}) do
     %LinkView{}
-      |> LinkView.changeset(attrs)
-      |> Ecto.Changeset.put_assoc(:link, link)
-      |> Repo.insert()
+    |> LinkView.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:link, link)
+    |> Repo.insert()
   end
 
   def update_shortened_link(%ShortenedLink{} = shortened_link, attrs) do
@@ -43,4 +43,6 @@ defmodule Shorty.Links do
   def change_shortened_link(%ShortenedLink{} = shortened_link, attrs \\ %{}) do
     ShortenedLink.changeset(shortened_link, attrs)
   end
+
+  def list_views, do: LinkView |> Repo.all() |> Repo.preload(:link)
 end

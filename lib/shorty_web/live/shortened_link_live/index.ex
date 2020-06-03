@@ -21,7 +21,8 @@ defmodule ShortyWeb.ShortenedLinkLive.Index do
   end
 
   defp apply_action(socket, :new, _params) do
-    random_string = :crypto.strong_rand_bytes(16) |> Base.encode64 |> binary_part(0, 16)
+    random_string = :crypto.strong_rand_bytes(16) |> Base.encode64() |> binary_part(0, 16)
+
     socket
     |> assign(:page_title, "New Shoretened link")
     |> assign(:shortened_link, %ShortenedLink{shortened_path: random_string})
@@ -34,6 +35,8 @@ defmodule ShortyWeb.ShortenedLinkLive.Index do
   end
 
   @impl true
+  @spec handle_event(<<_::48>>, map, Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("delete", %{"id" => id}, socket) do
     shortened_link = Links.get_shortened_link!(id)
     {:ok, _} = Links.delete_shortened_link(shortened_link)

@@ -18,7 +18,6 @@ defmodule ShortyWeb.Router do
   scope "/", ShortyWeb do
     pipe_through :browser
 
-
     live "/", PageLive, :index
     live "/shortened_links", ShortenedLinkLive.Index, :index
     live "/shortened_links/new", ShortenedLinkLive.Index, :new
@@ -26,6 +25,8 @@ defmodule ShortyWeb.Router do
 
     live "/shortened_links/:id", ShortenedLinkLive.Show, :show
     live "/shortened_links/:id/show/edit", ShortenedLinkLive.Show, :edit
+
+    live "/views", ViewsLive.Index, :index
 
     get "/:path", RedirectionController, :show
   end

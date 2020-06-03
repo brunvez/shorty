@@ -1,0 +1,49 @@
+<h2>Views (<%= Enum.count(@views) %>)</h2>
+
+<div><b>Unique views:</b> <%= unique_views(@views) %></div>
+
+<div><b>Views by Place:</b></div>
+<ul>
+  <%= for {{country, city}, views} <- views_by_place(@views) do %>
+    <li><b><%= city || "Unknown" %>, <%= country || "Unknown" %>:</b> <%= views %></li>
+  <% end %>
+</ul>
+
+<%= if @views_by_link do %>
+  <div><b>Views by link:</b></div>
+  <ul>
+    <%= for {link, views} <- views_by_link(@views) do %>
+      <li><%= live_redirect link.name, to: Routes.shortened_link_show_path(@socket, :show, link) %>: <%= views %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<table>
+<thead>
+    <tr>
+      <th>Country</th>
+      <th>City</th>
+      <th>IP</th>
+      <th>Browser</th>
+      <th>Viewed at</th>
+      <%= if @views_by_link do %>
+        <th>Link</th>
+      <% end %>
+    </tr>
+</thead>
+
+<tbody>
+  <%= for view <- @views do %>
+    <tr id="view-<%= view.id %>">
+      <td><%= view.country || "-" %></td>
+      <td><%= view.city || "-" %></td>
+      <td><%= view.ip || "-" %></td>
+      <td><%= view_browser(view) %></td>
+      <td><%= view.inserted_at %></td>
+      <%= if @views_by_link do %>
+        <td><%= live_redirect view.link.name, to: Routes.shortened_link_show_path(@socket, :show, view.link) %></td>
+       <% end %>
+    </tr>
+  <% end %>
+</tbody>
+</table>

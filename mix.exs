@@ -48,7 +48,8 @@ defmodule Shorty.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:geoip, "~> 0.2"},
-      {:remote_ip, "~> 0.2.0"}
+      {:remote_ip, "~> 0.2.0"},
+      {:browser, "~> 0.4.4"}
     ]
   end
 
