@@ -44,5 +44,5 @@ defmodule Shorty.Links do
     ShortenedLink.changeset(shortened_link, attrs)
   end
 
-  def list_views, do: LinkView |> Repo.all() |> Repo.preload(:link)
+  def list_views, do: LinkView |> order_by(desc: :inserted_at) |> Repo.all() |> Repo.preload(:link)
 end

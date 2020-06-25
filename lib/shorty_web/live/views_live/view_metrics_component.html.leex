@@ -2,21 +2,45 @@
 
 <div><b>Unique views:</b> <%= unique_views(@views) %></div>
 
-<div><b>Views by Place:</b></div>
-<ul>
-  <%= for {{country, city}, views} <- views_by_place(@views) do %>
-    <li><b><%= city || "Unknown" %>, <%= country || "Unknown" %>:</b> <%= views %></li>
-  <% end %>
-</ul>
+<div class="row graphics-row">
+  <%= if @views_by_link do %>
+    <div class="column column-50">
+      <div
+        id="places-chart-container"
+        class="graph-container"
+        phx-update="ignore"
+        data-views="<%= Jason.encode!(views_by_place(@views)) %>"
+        phx-hook="ViewsByPlacesChart"
+      >
+        <svg id="places-chart"></svg>
+      </div>
+    </div>
 
-<%= if @views_by_link do %>
-  <div><b>Views by link:</b></div>
-  <ul>
-    <%= for {link, views} <- views_by_link(@views) do %>
-      <li><%= live_redirect link.name, to: Routes.shortened_link_show_path(@socket, :show, link) %>: <%= views %></li>
-    <% end %>
-  </ul>
-<% end %>
+    <div class="column column-50">
+      <div
+        id="views-by-link-chart-container"
+        class="graph-container"
+        phx-update="ignore"
+        data-views="<%= Jason.encode!(views_by_link(@views)) %>"
+        phx-hook="ViewsByLinkChart"
+      >
+        <svg id="views-by-link-chart"></svg>
+      </div>
+    </div>
+  <% else %>
+    <div class="column column-100">
+      <div
+        id="places-chart-container"
+        class="graph-container"
+        phx-update="ignore"
+        data-views="<%= Jason.encode!(views_by_place(@views)) %>"
+        phx-hook="ViewsByPlacesChart"
+      >
+        <svg id="places-chart"></svg>
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <table>
 <thead>
