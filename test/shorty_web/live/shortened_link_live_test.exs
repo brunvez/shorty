@@ -6,16 +6,21 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
   alias Shorty.Links
 
   @create_attrs %{
-    metadata: %{},
-    original_url: "some original_url",
-    shortened_path: "some shortened_path"
+    name: "New Link",
+    original_url: "http://www.google.com",
+    shortened_path: "some_shortened_path"
+  }
+  @create_new_attrs %{
+    name: "Another New Link",
+    original_url: "http://www.google.com",
+    shortened_path: "another_shortened_path"
   }
   @update_attrs %{
-    metadata: %{},
-    original_url: "some updated original_url",
-    shortened_path: "some updated shortened_path"
+    name: "New name",
+    original_url: "http://www.google-updated.com",
+    shortened_path: "a_new_path"
   }
-  @invalid_attrs %{metadata: nil, original_url: nil, shortened_path: nil}
+  @invalid_attrs %{name: nil, original_url: nil, shortened_path: nil}
 
   defp fixture(:shortened_link) do
     {:ok, shortened_link} = Links.create_shortened_link(@create_attrs)
@@ -51,12 +56,12 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
 
       {:ok, _, html} =
         index_live
-        |> form("#shortened_link-form", shortened_link: @create_attrs)
+        |> form("#shortened_link-form", shortened_link: @create_new_attrs)
         |> render_submit()
         |> follow_redirect(conn, Routes.shortened_link_index_path(conn, :index))
 
       assert html =~ "Shoretened link created successfully"
-      assert html =~ "some original_url"
+      assert html =~ "http://www.google.com"
     end
 
     test "updates shortened_link in listing", %{conn: conn, shortened_link: shortened_link} do
@@ -80,7 +85,7 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
         |> follow_redirect(conn, Routes.shortened_link_index_path(conn, :index))
 
       assert html =~ "Shoretened link updated successfully"
-      assert html =~ "some updated original_url"
+      assert html =~ "http://www.google-updated.com"
     end
 
     test "deletes shortened_link in listing", %{conn: conn, shortened_link: shortened_link} do
@@ -125,7 +130,7 @@ defmodule ShortyWeb.ShortenedLinkLiveTest do
         |> follow_redirect(conn, Routes.shortened_link_show_path(conn, :show, shortened_link))
 
       assert html =~ "Shoretened link updated successfully"
-      assert html =~ "some updated original_url"
+      assert html =~ "http://www.google-updated.com"
     end
   end
 end
