@@ -14,7 +14,7 @@ defmodule ShortyWeb.RedirectionController do
           _ -> %{}
         end
 
-      user_agent = get_req_header(conn, "user-agent") |> Enum.at(0, "")
+      user_agent = conn |> get_req_header("user-agent") |> Enum.at(0, "")
 
       attrs = %{
         country: geo_data[:country_name],
@@ -25,9 +25,7 @@ defmodule ShortyWeb.RedirectionController do
 
       Links.add_view(link, attrs)
 
-      IO.inspect(ShortyWeb.Endpoint.broadcast(@link_views_topic, "new_view", %{link_id: link.id}),
-        label: "Broadcast"
-      )
+      ShortyWeb.Endpoint.broadcast(@link_views_topic, "new_view", %{link_id: link.id})
     end)
 
     redirect(conn, external: link.original_url)

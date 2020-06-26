@@ -49,7 +49,8 @@ defmodule Shorty.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:geoip, "~> 0.2"},
       {:remote_ip, "~> 0.2.0"},
-      {:browser, "~> 0.4.4"}
+      {:browser, "~> 0.4.4"},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 
