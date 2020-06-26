@@ -13,7 +13,7 @@ defmodule Shorty.Links do
     Repo.all(ShortenedLink)
   end
 
-  def get_shortened_link!(id), do: Repo.get!(ShortenedLink, id) |> Repo.preload(:views)
+  def get_shortened_link!(id), do: ShortenedLink |> Repo.get!(id) |> Repo.preload(:views)
 
   def get_by_path!(path), do: ShortenedLink |> where(shortened_path: ^path) |> Repo.one!()
 
@@ -44,5 +44,6 @@ defmodule Shorty.Links do
     ShortenedLink.changeset(shortened_link, attrs)
   end
 
-  def list_views, do: LinkView |> order_by(desc: :inserted_at) |> Repo.all() |> Repo.preload(:link)
+  def list_views,
+    do: LinkView |> order_by(desc: :inserted_at) |> Repo.all() |> Repo.preload(:link)
 end
